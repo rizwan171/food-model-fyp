@@ -69,14 +69,5 @@ with tf.device('/GPU'):
     shuffle=True
   )
 
-  # train = model.fit(
-  #   x=x_train,
-  #   y=y_train,
-  #   batch_size=batch_size,
-  #   validation_data=(x_valid, y_valid),
-  #   epochs=epochs,
-  #   shuffle=True
-  # )
-
   # save the model
   model.save('model.h5')
