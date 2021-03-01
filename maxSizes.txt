@@ -1,2 +1,0 @@
-max width: 1511
-max height: 3874
