@@ -23,18 +23,32 @@ with tf.device('/CPU'):
   num_classes = 10
 
   # define the model
-  model = Sequential([
-    layers.experimental.preprocessing.Rescaling(1./255, input_shape=(img_height, img_width, 3)),
-    layers.Conv2D(32, 3, padding='same', activation='relu'),
-    layers.MaxPooling2D(),
-    layers.Conv2D(64, 3, padding='same', activation='relu'),
-    layers.MaxPooling2D(),
-    layers.Conv2D(64, 3, padding='same', activation='relu'),
-    layers.MaxPooling2D(),
-    layers.Flatten(),
-    layers.Dense(128, activation='relu'),
-    layers.Dense(num_classes, activation='softmax')
-  ])
+  # model = Sequential([
+  #   layers.experimental.preprocessing.Rescaling(1./255, input_shape=(img_height, img_width, 3)),
+  #   layers.Conv2D(32, 3, padding='same', activation='relu', input_shape=(img_height, img_width, 3)),
+  #   layers.MaxPooling2D(),
+  #   layers.Conv2D(64, 3, padding='same', activation='relu'),
+  #   layers.MaxPooling2D(),
+  #   layers.Conv2D(64, 3, padding='same', activation='relu'),
+  #   layers.MaxPooling2D(),
+  #   layers.Flatten(),
+  #   layers.Dense(128, activation='relu'),
+  #   layers.Dense(num_classes, activation='softmax')
+  # ])
+
+  
+  #first creating the model
+  model = Sequential()
+  in_size=(img_height,img_width,3)
+  model.add(layers.Conv2D(32,(3,3),activation='relu',input_shape=(in_size)))
+  model.add(layers.MaxPooling2D(pool_size=(2,2)))
+  model.add(layers.Conv2D(64, 3, padding='same', activation='relu'))
+  model.add(layers.MaxPooling2D())
+  model.add(layers.Conv2D(64, 3, padding='same', activation='relu'))
+  model.add(layers.MaxPooling2D())
+  model.add(layers.Flatten())
+  model.add(layers.Dense(num_classes, activation='softmax'))
+
 
   # define the optimisation and loss functions
   model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
@@ -57,17 +71,20 @@ with tf.device('/CPU'):
     image_size=(img_height, img_width),
     batch_size=batch_size)
 
-with tf.device('/GPU'):
+  print(type(training_dataset))
+# with tf.device('/GPU'):
 
-  # train the model
-  epochs=20
-  train = model.fit(
-    x=training_dataset,
-    batch_size=batch_size,
-    validation_data=validation_dataset,
-    epochs=epochs,
-    shuffle=True
-  )
+#   # train the model
+#   epochs=20
+#   train = model.fit(
+#     x=training_dataset,
+#     batch_size=batch_size,
+#     validation_data=validation_dataset,
+#     epochs=epochs,
+#     shuffle=True
+#   )
 
-  # save the model
-  model.save('model.h5')
+#   # save the model
+#   model.save('model.h5')
+
+#   model.summary()
